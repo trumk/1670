@@ -1,5 +1,5 @@
-﻿@model IEnumerable<buoi1.Models.Ticket>
-
+﻿@* @model IEnumerable<buoi1.Models.Ticket> *@
+@model buoi1.Models.TicketGenreViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,16 +11,10 @@
 </p>
 <form asp-controller="Tickets" asp-action="Index" method="get">
     <p>
-        Title: <input type="text" name="searchString" />
-
-        Genre:
-        <select name="genreFilter" onchange="this.form.submit()">
-            @foreach (var genre in ViewData["Genres"] as List<SelectListItem>)
-            {
-                <option value="@genre.Value" selected="@((ViewData["genreFilter"] as string) == genre.Value ? "selected" : "")">@genre.Text</option>
-            }
+        <select asp-for="TicketGenre" asp-items="Model.Genres">
+            <option value="">All</option>
         </select>
-
+        Title: <input type="text" name="searchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -31,25 +25,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                ReleaseDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                Genre
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Tickets) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
