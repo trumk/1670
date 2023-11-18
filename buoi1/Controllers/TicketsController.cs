@@ -20,11 +20,8 @@ namespace buoi1.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string genreFilter)
         {
-            //return _context.Ticket != null ? 
-            //            View(await _context.Ticket.ToListAsync()) :
-            //            Problem("Entity set 'DBContext.Ticket'  is null.");
             var tickets = from m in _context.Ticket select m;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -32,8 +29,40 @@ namespace buoi1.Controllers
                 tickets = tickets.Where(s => s.Title.Contains(searchString));
             }
 
+            // Retrieve distinct genres from the database
+            var genres = await _context.Ticket
+                .Where(t => t.Genre != null)
+                .Select(t => t.Genre)
+                .Distinct()
+                .ToListAsync();
+
+            // Create a SelectList for the dropdown options
+            var genresSelectList = genres.Select(genre => new SelectListItem { Value = genre, Text = genre }).ToList();
+
+            // Add an option for "-- All Genres --" at the beginning of the list
+            genresSelectList.Insert(0, new SelectListItem { Value = "", Text = "-- All Genres --" });
+
+            ViewData["Genres"] = genresSelectList;
+
+
+            if (!String.IsNullOrEmpty(genreFilter))
+            {
+                // Handle null values for Genre field
+                if (genreFilter == "null")
+                {
+                    tickets = tickets.Where(s => s.Genre == null);
+                }
+                else
+                {
+                    tickets = tickets.Where(s => s.Genre == genreFilter);
+                }
+            }
+            genresSelectList.Add(new SelectListItem { Value = "", Text = "--- Select Genre ---" });
+
             return View(await tickets.ToListAsync());
         }
+
+
 
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
