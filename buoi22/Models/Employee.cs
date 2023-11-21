@@ -11,7 +11,12 @@ namespace buoi22.Models
         public string Gender { get; set; }
         public int Salary { get; set; }
         public string ProfilePicture { get; set; }
+        public Employee()
+        {
+            FullName = FirstName + " " + LastName;
+        }
         [NotMapped]
+        public string FullName { get; set; }
         public IFormFile ProfileImage { get; set; }
     }
 }

@@ -33,8 +33,9 @@ namespace buoi22.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult New() { 
-        return View();
+        public IActionResult New()
+        { 
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -43,6 +44,19 @@ namespace buoi22.Controllers
             if(ModelState.IsValid)
             {
                 string uniqueFilename = UploadedFile(model);
+                Employee employee = new Employee
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    FullName = model.FirstName + " " + model.LastName,
+                    Gender = model.Gender,
+                    Age = model.Age,
+                    Salary = model.Salary,
+                    ProfileImage = model.ProfileImage
+                };
+                dbContext.Add(employee);
+                dbContext.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
             return View();
         }
