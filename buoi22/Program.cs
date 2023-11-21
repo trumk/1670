@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using buoi22.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<buoi22Context>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("buoi22Context") ?? throw new InvalidOperationException("Connection string 'buoi22Context' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using buoi1.Data;
 
@@ -11,9 +12,10 @@ using buoi1.Data;
 namespace buoi1.Migrations
 {
     [DbContext(typeof(buoi1Context))]
-    partial class buoi1ContextModelSnapshot : ModelSnapshot
+    [Migration("20231121012905_buoi2")]
+    partial class buoi2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
