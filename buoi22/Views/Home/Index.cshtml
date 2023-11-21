@@ -1,8 +1,33 @@
-﻿@{
+﻿@model IEnumerable<buoi22.Models.Employee>
+@{
     ViewData["Title"] = "Home Page";
 }
+<h4>List of employee</h4>
+<p>
+    <a asp-action="New" class="btn btn-sm btn-primary">Add new</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var employee in Model)
+        {
+            <tr>
+                <td>
+                    <img src="/image/@employee.ProfilePicture" class="rounded-cycle" height="100" width="100" />
+                    @employee.FirstName @employee.LastName
+                </td>
+                <td>@employee.Age</td>
+                <td>@employee.Gender</td>
+                <td>@employee.Salary</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
