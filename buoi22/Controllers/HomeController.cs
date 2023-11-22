@@ -63,6 +63,84 @@ namespace buoi22.Controllers
             };
             return View();
         }
+        public IActionResult Edit(int id)
+        {
+            // Lấy thông tin của Employee từ cơ sở dữ liệu bằng Id
+            var employee = dbContext.Employee.Find(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            // Map dữ liệu từ Employee sang EmployeeViewModel
+            var employeeViewModel = new EmployeeViewModel
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Age = employee.Age,
+                Gender = employee.Gender,
+                Salary = employee.Salary
+                // Không cần map ProfileImage vì bạn chỉ muốn sửa thông tin văn bản
+            };
+
+            return View(employeeViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Tìm Employee cần chỉnh sửa trong cơ sở dữ liệu
+                    var employee = await dbContext.Employee.FindAsync(id);
+
+                    if (employee == null)
+                    {
+                        // Trả về NotFound nếu không tìm thấy Employee
+                        return NotFound();
+                    }
+
+                    // Xóa hình ảnh cũ trước khi tải lên hình ảnh mới
+                    if (!string.IsNullOrEmpty(employee.ProfilePicture))
+                    {
+                        var oldImagePath = Path.Combine(webHostEnvironment.WebRootPath, "image", employee.ProfilePicture);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Gọi hàm UploadedFile để xử lý tệp tải lên và lấy tên tệp duy nhất
+                    string uniqueFileName = UploadedFile(model);
+
+                    // Cập nhật thông tin Employee từ dữ liệu mới
+                    employee.FirstName = model.FirstName;
+                    employee.LastName = model.LastName;
+                    employee.Gender = model.Gender;
+                    employee.Age = model.Age;
+                    employee.Salary = model.Salary;
+                    employee.ProfilePicture = uniqueFileName;
+
+                    // Lưu các thay đổi vào cơ sở dữ liệu
+                    await dbContext.SaveChangesAsync();
+
+                    // Chuyển hướng đến action Index
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Ghi log lỗi
+                    Console.WriteLine($"Error in Edit action: {ex.Message}");
+                    return View(model);
+                }
+            }
+
+            // Trả về View nếu ModelState không hợp lệ
+            return View(model);
+        }
+
         private string UploadedFile(EmployeeViewModel model)
         //private string UploadedFile(Employee model) 
         {

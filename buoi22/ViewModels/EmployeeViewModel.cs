@@ -4,6 +4,7 @@ namespace buoi22.ViewModels
 {
     public class EmployeeViewModel
     {
+        public int Id { get; set; } 
         [Required(ErrorMessage = "Please enter first name")]
         [Display(Name = "First Name")]
         [StringLength(100)]
