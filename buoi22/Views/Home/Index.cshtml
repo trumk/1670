@@ -29,8 +29,11 @@
                 <td>@employee.Gender</td>
                 <td>@employee.Salary</td>
                 <td>
-                    <!-- Thêm nút Edit với href chứa đường link đến action Edit và id của employee -->
                     <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-sm btn-info">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this employee?');">
+                        Delete
+                    </a>
                 </td>
             </tr>
         }

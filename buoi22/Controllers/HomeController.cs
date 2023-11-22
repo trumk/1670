@@ -140,6 +140,49 @@ namespace buoi22.Controllers
             // Trả về View nếu ModelState không hợp lệ
             return View(model);
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Find the employee by id
+            var employee = await dbContext.Employee.FindAsync(id);
+
+            if (employee == null)
+            {
+                // If employee not found, return NotFound
+                return NotFound();
+            }
+
+            try
+            {
+                // Remove the employee from the DbContext
+                dbContext.Employee.Remove(employee);
+
+                // Delete the profile picture file if it exists
+                if (!string.IsNullOrEmpty(employee.ProfilePicture))
+                {
+                    var imagePath = Path.Combine(webHostEnvironment.WebRootPath, "image", employee.ProfilePicture);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                // Save changes to the database
+                await dbContext.SaveChangesAsync();
+
+                // Redirect to the Index action after successful deletion
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Log the error if an exception occurs
+                Console.WriteLine($"Error in Delete action: {ex.Message}");
+
+                // Redirect to the Index action with an error message
+                TempData["ErrorMessage"] = "Error deleting employee.";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
 
         private string UploadedFile(EmployeeViewModel model)
         //private string UploadedFile(Employee model) 
