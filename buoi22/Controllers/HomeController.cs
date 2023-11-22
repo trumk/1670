@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using buoi22.Data;
+using buoi22.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -39,28 +40,31 @@ namespace buoi22.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> New(Employee model)
+        public async Task<IActionResult> New(EmployeeViewModel model)
+        //public async Task<IActionResult> New(Employee model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                string uniqueFilename = UploadedFile(model);
+                string uniqueFileName = UploadedFile(model);
                 Employee employee = new Employee
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    FullName = model.FirstName + " " + model.LastName,
+                    //FullName = model.FirstName + " " + model.LastName,
                     Gender = model.Gender,
                     Age = model.Age,
                     Salary = model.Salary,
-                    ProfileImage = model.ProfileImage
+                    //ProfilePicture = model.ProfilePicture
+                    ProfilePicture = uniqueFileName,
                 };
                 dbContext.Add(employee);
-                dbContext.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+                await dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            };
             return View();
         }
-        private string UploadedFile(Employee model)
+        private string UploadedFile(EmployeeViewModel model)
+        //private string UploadedFile(Employee model) 
         {
             string uniqueFileName = null;
             if (model.ProfileImage != null)
