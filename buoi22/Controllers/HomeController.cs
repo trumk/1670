@@ -69,7 +69,7 @@ namespace buoi22.Controllers
             string uniqueFileName = null;
             if (model.ProfileImage != null)
             {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "image");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileImage.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
