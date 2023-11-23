@@ -55,10 +55,10 @@
                 @Html.DisplayFor(modelItem => item.OrderTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Movie.Id)
+                @Html.DisplayFor(modelItem => item.Movie.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
