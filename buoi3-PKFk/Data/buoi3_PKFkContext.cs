@@ -17,5 +17,7 @@ namespace buoi3_PKFk.Data
         public DbSet<buoi3_PKFk.Models.Movie> Movie { get; set; } = default!;
 
         public DbSet<buoi3_PKFk.Models.User> User { get; set; } = default!;
+
+        public DbSet<buoi3_PKFk.Models.Order> Order { get; set; } = default!;
     }
 }
