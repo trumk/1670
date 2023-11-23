@@ -18,6 +18,6 @@ namespace buoi22.Models
         [NotMapped]
         public string FullName { get; set; }
         [NotMapped]
-        public IFormFile ProfileImage { get; set; }
+        public string ProfileImage { get; set; }
     }
 }
