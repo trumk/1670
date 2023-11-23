@@ -166,6 +166,14 @@ namespace buoi3_PKFk.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public IActionResult GetMoviePrice(int movieId)
+        {
+            // Retrieve the movie price based on the provided movieId
+            var moviePrice = _context.Movie.Where(m => m.Id == movieId).Select(m => m.TicketPrice).FirstOrDefault();
+            return Json(moviePrice);
+        }
+
         private bool OrderExists(int id)
         {
           return (_context.Order?.Any(e => e.Id == id)).GetValueOrDefault();

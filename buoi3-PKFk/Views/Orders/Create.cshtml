@@ -14,12 +14,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <input asp-for="Quantity" class="form-control" id="quantityInput" /> <!-- Add the id here -->
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" readonly id="priceInput" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,11 +39,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="MovieId" class="control-label"></label>
-                <select asp-for="MovieId" class ="form-control" asp-items="ViewBag.MovieId"></select>
+                <select asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -57,5 +57,45 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            // Update the price when the quantity changes
+            $("#quantityInput").change(function () {
+                updatePrice();
+            });
+
+            // Update the price when the movie selection changes
+            $("#MovieId").change(function () {
+                updatePrice();
+            });
+
+            // Initial update
+            updatePrice();
+
+            function updatePrice() {
+                var quantity = parseFloat($("#quantityInput").val()) || 0;
+                var movieId = $("#MovieId").val();
+
+                // Fetch the movie price via AJAX
+                $.ajax({
+                    url: "/Orders/GetMoviePrice",
+                    type: "GET",
+                    data: { movieId: movieId },
+                    success: function (data) {
+                        var moviePrice = parseFloat(data) || 0;
+                        var price = quantity * moviePrice;
+                        $("#priceInput").val(price.toFixed(2));
+                    },
+                    error: function () {
+                        // Handle error
+                        $("#priceInput").val("NaN");
+                    }
+                });
+            }
+        });
+    </script>
 }
+
