@@ -40,8 +40,8 @@ namespace buoi22.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> New(EmployeeViewModel model)
-        //public async Task<IActionResult> New(Employee model)
+        //public async Task<IActionResult> New(EmployeeViewModel model)
+        public async Task<IActionResult> New(Employee model)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace buoi22.Controllers
             }
 
             // Map dữ liệu từ Employee sang EmployeeViewModel
-            var employeeViewModel = new EmployeeViewModel
+            var employeeEdit = new Employee
             {
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
@@ -84,10 +84,10 @@ namespace buoi22.Controllers
                 // Không cần map ProfileImage vì bạn chỉ muốn sửa thông tin văn bản
             };
 
-            return View(employeeViewModel);
+            return View(employeeEdit);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
+        public async Task<IActionResult> Edit(int id, Employee model)
         {
             if (ModelState.IsValid)
             {
@@ -184,8 +184,8 @@ namespace buoi22.Controllers
         }
 
 
-        private string UploadedFile(EmployeeViewModel model)
-        //private string UploadedFile(Employee model) 
+        //private string UploadedFile(EmployeeViewModel model)
+        private string UploadedFile(Employee model) 
         {
             string uniqueFileName = null;
             if (model.ProfileImage != null)

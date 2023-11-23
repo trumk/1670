@@ -10,14 +10,14 @@ namespace buoi22.Models
         public int Age { get; set; }
         public string Gender { get; set; }
         public int Salary { get; set; }
-        public string ProfilePicture { get; set; }
-        public Employee()
-        {
-            FullName = FirstName + " " + LastName;
-        }
+        public string? ProfilePicture { get; set; }
+        //public Employee()
+        ////{
+        ////    FullName = FirstName + " " + LastName;
+        ////}
+        //[NotMapped]
+        //public string FullName { get; set; }
         [NotMapped]
-        public string FullName { get; set; }
-        [NotMapped]
-        public string ProfileImage { get; set; }
+        public IFormFile ProfileImage { get; set; }
     }
 }
