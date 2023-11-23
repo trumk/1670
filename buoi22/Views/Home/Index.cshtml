@@ -10,11 +10,12 @@
 <table class="table table-bordered">
     <thead>
         <tr>
+            <th>Profile Pic</th>
             <th>Full Name</th>
             <th>Age</th>
             <th>Gender</th>
             <th>Salary</th>
-            <th>Action</th> <!-- Thêm cột Action -->
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,8 @@
             <tr>
                 <td>
                     <img src="/image/@employee.ProfilePicture" class="rounded-cycle" height="100" width="100" />
+                </td>
+                <td>
                     @employee.FirstName @employee.LastName
                 </td>
                 <td>@employee.Age</td>
