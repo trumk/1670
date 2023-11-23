@@ -49,8 +49,8 @@ namespace buoi3_PKFk.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Name"); // Assuming 'Name' is the property for movie names
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Name"); // Assuming 'UserName' is the property for user names
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Name"); 
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Name"); 
             return View();
         }
 
@@ -122,8 +122,8 @@ namespace buoi3_PKFk.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Id", order.MovieId);
-            ViewData["UserId"] = new SelectList(_context.User, "Id", "Id", order.UserId);
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Name", order.MovieId);
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Name", order.UserId);
             return View(order);
         }
 
