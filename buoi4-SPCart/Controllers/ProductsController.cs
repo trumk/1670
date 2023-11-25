@@ -89,6 +89,7 @@ namespace buoi4_SPCart.Controllers
                 return Ok(quantity);
             }
             return BadRequest();
+
         }
 
         public IActionResult DeleteCart(int id)
