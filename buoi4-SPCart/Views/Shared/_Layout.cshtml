@@ -1,4 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+@{
+    var data = Context.Session.GetString("cart");
+    int countCart = 0;
+    if(data == null)
+    {
+        countCart = 0;
+    }
+    else
+    {
+        var data2 = Context.Session.GetString("cart");
+        List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(data2);
+        foreach(var item in dataCart)
+        {
+            countCart += item.Quantity;
+        }
+    }
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
