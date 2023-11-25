@@ -1,6 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "ListCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -30,33 +31,43 @@
     });
 </script>
 
-<div class="List-cart">
-    <table>
-        <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>Update</th>
-            <th>Delete</th>
-        </tr>
-        @{
-            foreach(var item in ViewBag.carts)
-            {
-                string txt_class = "quantity_" + item.Product.ProductID;
-                decimal total = item.Product.Price * item.Quantity;
-                <tr>
-                    <td><img src="~/images/@item.Product.Picture" width="100" height="100" /></td>
-                    <td>@item.Product.Title</td>
-                    <td><input type="number" class="@txt_class" value="@item.Quantity"/></td>
-                    <td>@item.Product.Price</td>
-                    <td>@total</td>
-                    <td><a href="" data-id="@item.Product.ProductID" class="updateCart">Update</a></td>
-                    <td><a asp-controller="Products" asp-action="DeleteCart" asp-route-id="@item.Product.ProductID">Delete</a></td>
-                </tr>
+@if (ViewBag.carts != null && ViewBag.carts.Count > 0)
+{
+    <div class="List-cart">
+        <table>
+            <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+            @{
+                foreach (var item in ViewBag.carts)
+                {
+                    string txt_class = "quantity_" + item.Product.ProductID;
+                    decimal total = item.Product.Price * item.Quantity;
+                    <tr>
+                        <td><img src="~/images/@item.Product.Picture" width="100" height="100" /></td>
+                        <td>@item.Product.Title</td>
+                        <td><input type="number" class="@txt_class" value="@item.Quantity" /></td>
+                        <td>@item.Product.Price</td>
+                        <td>@total</td>
+                        <td><a href="" data-id="@item.Product.ProductID" class="updateCart" data-url="@Url.Action("updateCart", "Products")">Update</a></td>
+                        <td><a asp-controller="Products" asp-action="DeleteCart" asp-route-id="@item.Product.ProductID">Delete</a></td>
+                    </tr>
+                }
             }
-        }
-    </table>
-</div>
+        </table>
+    </div>
+}
+else
+{
+    <div>
+        <p>No items found in your cart.</p>
+    </div>
+}
+
 

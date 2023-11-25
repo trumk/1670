@@ -124,9 +124,19 @@ namespace buoi4_SPCart.Controllers
                     ViewBag.carts = dataCart;
                     return View();
                 }
-                return RedirectToAction(nameof(ListCart));
+                else
+                {
+                    return RedirectToAction(nameof(NotFoundCart));
+                }
             }
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(NotFoundCart));
         }
+
+        public IActionResult NotFoundCart()
+        {
+            return View();
+        }
+
     }
 }
