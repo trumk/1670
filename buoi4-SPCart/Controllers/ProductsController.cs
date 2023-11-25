@@ -88,5 +88,38 @@ namespace buoi4_SPCart.Controllers
             }
             return BadRequest();
         }
+        public IActionResult DeleteCart(int id)
+        {
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                    for (int i = 0; i < dataCart.Count; i++)
+                    {
+                        if (dataCart[i].Product.ProductID == id)
+                        {
+                        dataCart.RemoveAt(i);
+                        }
+                    }
+                    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+                return RedirectToAction(nameof(ListCart));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult ListCart()
+        {
+            var cart = HttpContext.Session.GetString("cart");
+            if (cart != null)
+            {
+                List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
+                if(dataCart.Count >0)
+                {
+                    ViewBag.carts = dataCart;
+                    return View();
+                }               
+                return RedirectToAction(nameof(ListCart));
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
