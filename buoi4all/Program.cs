@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using buoi4_all.Data;
+using buoi4all.Data;
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<buoi4_allContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("buoi4_allContext") ?? throw new InvalidOperationException("Connection string 'buoi4_allContext' not found.")));
+builder.Services.AddDbContext<buoi4allContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("buoi4allContext") ?? throw new InvalidOperationException("Connection string 'buoi4allContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
