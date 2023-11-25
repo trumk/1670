@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "ListCart";
+}
+
+<style>
+    td, th {
+        padding: 10px;
+    }
+</style>
+<script src="~/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".updateCart").click(function (event) {
+            event.preventDefault();
+            var quantity = $(".quantity_" + $(this).attr("data-id")).val();
+            console.log(quantity);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("updateCart", "Product")",
+                data: {
+                    id: $(this).attr("data-id"),
+                    quantity: quantity
+                },
+                success: function (result) {
+                    window.location.href = '@Url.Action("ListCart", "Product")';
+                }
+            });
+        });
+    });
+</script>
+
+<div class="List-cart">
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        @{
+            int No = 0;
+            foreach(var item in ViewBag.carts)
+            {
+                string txt_class = "quantity_" + item.Product.ProductID;
+                No++;
+                decimal total = item.Product.Price * item.Quantity;
+                <tr>
+                    <td><img src="~/images/@item.Product.UrlImage" width="100" height="100"/></td>
+                    <td>@item.Product.Title</td>
+                    <td><input type="number" class="@txt_class" value="@item.Quantity"/></td>
+                    <td>@item.Product.Price</td>
+                    <td>@total</td>
+                    <td><a class="updateCart">Update</a></td>
+                    <td><a asp-controller="Product" asp-action="DeleteCart" asp-route-id="@item.Product.ProductID">Delete</a></td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
