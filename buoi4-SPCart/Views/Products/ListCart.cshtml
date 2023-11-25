@@ -17,13 +17,13 @@
             console.log(quantity);
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("updateCart", "Product")",
+                url: "@Url.Action("updateCart", "Products")",
                 data: {
                     id: $(this).attr("data-id"),
                     quantity: quantity
                 },
                 success: function (result) {
-                    window.location.href = '@Url.Action("ListCart", "Product")';
+                    window.location.href = '@Url.Action("ListCart", "Products")';
                 }
             });
         });
@@ -33,7 +33,6 @@
 <div class="List-cart">
     <table>
         <tr>
-            <th>No</th>
             <th>Image</th>
             <th>Title</th>
             <th>Quantity</th>
@@ -43,20 +42,18 @@
             <th>Delete</th>
         </tr>
         @{
-            int No = 0;
             foreach(var item in ViewBag.carts)
             {
                 string txt_class = "quantity_" + item.Product.ProductID;
-                No++;
                 decimal total = item.Product.Price * item.Quantity;
                 <tr>
-                    <td><img src="~/images/@item.Product.Image" width="100" height="100"/></td>
+                    <td><img src="~/images/@item.Product.Picture" width="100" height="100" /></td>
                     <td>@item.Product.Title</td>
                     <td><input type="number" class="@txt_class" value="@item.Quantity"/></td>
                     <td>@item.Product.Price</td>
                     <td>@total</td>
-                    <td><a class="updateCart">Update</a></td>
-                    <td><a asp-controller="Product" asp-action="DeleteCart" asp-route-id="@item.Product.ProductID">Delete</a></td>
+                    <td><a href="" data-id="@item.Product.ProductID" class="updateCart">Update</a></td>
+                    <td><a asp-controller="Products" asp-action="DeleteCart" asp-route-id="@item.Product.ProductID">Delete</a></td>
                 </tr>
             }
         }
