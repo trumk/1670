@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using buoi4_SPCart.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<buoi4_SPCartContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("buoi4_SPCartContext") ?? throw new InvalidOperationException("Connection string 'buoi4_SPCartContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
