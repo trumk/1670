@@ -2,17 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using buoi4all.Data;
+using buoi4_SPCart.Data;
 
 #nullable disable
 
-namespace buoi4all.Migrations
+namespace buoi4_SPCart.Migrations
 {
-    [DbContext(typeof(buoi4allContext))]
-    partial class buoi4allContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(buoi4_SPCartContext))]
+    [Migration("20231125131636_Picture")]
+    partial class Picture
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +24,7 @@ namespace buoi4all.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("buoi4all.Models.Product", b =>
+            modelBuilder.Entity("buoi4_SPCart.Models.Product", b =>
                 {
                     b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()

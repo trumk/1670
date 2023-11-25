@@ -46,9 +46,14 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a asp-controller="Product" asp-action="ListCart" , style="display:flex">
-                                Cart <img src="~/images/cart.png" width=" 20" height="20" />
-                                @countCart
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ProductsAdmin" asp-action="Index">Manage</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Products" asp-action="ListCart" , style="display:flex">
+                                Cart <img src="~/images/cart.png" width=" 20" !important; height="20" /> @countCart
                             </a>
                         </li>
                     </ul>

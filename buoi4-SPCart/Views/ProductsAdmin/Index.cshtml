@@ -18,9 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Detail)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.UrlImage)
-            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
@@ -31,14 +31,14 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                <img src="/images/@item.Picture" class="rounded-cycle" height="100" width="100" />
+           </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Detail)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.UrlImage)
-            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>

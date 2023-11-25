@@ -14,8 +14,8 @@ namespace buoi4_SPCart.Controllers
         }
         public IActionResult Index()
         {
-            var _products = GetAllProducts();
-            ViewBag.products = _products;
+            var _product = GetAllProducts();
+            ViewBag.product = _product;
             return View();
         }
         public List<Product> GetAllProducts()
@@ -33,7 +33,7 @@ namespace buoi4_SPCart.Controllers
             if (cart == null)
             {
                 var product = GetDetailProduct(id);
-                List<Cart> ListCart = new List<Cart>()
+                List<Cart> listCart = new List<Cart>()
                 {
                     new Cart
                     {
@@ -41,18 +41,18 @@ namespace buoi4_SPCart.Controllers
                         Quantity = 1
                     }
                 };
-                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(ListCart));
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(listCart));
             }
             else
             {
                 List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
                 bool check = true;
-                for(int i = 0; i<dataCart.Count; i++)
+                for (int i = 0; i < dataCart.Count; i++)
                 {
                     if (dataCart[i].Product.ProductID == id)
                     {
                         dataCart[i].Quantity++;
-                        check = false; 
+                        check = false;
                     }
                 }
                 if (check)
@@ -66,14 +66,16 @@ namespace buoi4_SPCart.Controllers
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
             }
             return RedirectToAction("Index");
+
         }
+
         public IActionResult UpdateCart(int id, int quantity)
         {
             var cart = HttpContext.Session.GetString("cart");
-            if(cart != null)
+            if (cart != null)
             {
                 List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
-                if(quantity > 0)
+                if (quantity > 0)
                 {
                     for (int i = 0; i < dataCart.Count; i++)
                     {
@@ -87,21 +89,25 @@ namespace buoi4_SPCart.Controllers
                 return Ok(quantity);
             }
             return BadRequest();
+
         }
+
         public IActionResult DeleteCart(int id)
         {
             var cart = HttpContext.Session.GetString("cart");
             if (cart != null)
             {
                 List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
-                    for (int i = 0; i < dataCart.Count; i++)
+
+                for (int i = 0; i < dataCart.Count; i++)
+                {
+                    if (dataCart[i].Product.ProductID == id)
                     {
-                        if (dataCart[i].Product.ProductID == id)
-                        {
                         dataCart.RemoveAt(i);
-                        }
                     }
-                    HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+                }
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(dataCart));
+
                 return RedirectToAction(nameof(ListCart));
             }
             return RedirectToAction(nameof(Index));
@@ -112,11 +118,12 @@ namespace buoi4_SPCart.Controllers
             if (cart != null)
             {
                 List<Cart> dataCart = JsonConvert.DeserializeObject<List<Cart>>(cart);
-                if(dataCart.Count >0)
+
+                if (dataCart.Count > 0)
                 {
                     ViewBag.carts = dataCart;
                     return View();
-                }               
+                }
                 return RedirectToAction(nameof(ListCart));
             }
             return RedirectToAction(nameof(Index));

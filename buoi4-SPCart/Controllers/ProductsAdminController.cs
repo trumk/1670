@@ -12,30 +12,31 @@ namespace buoi4_SPCart.Controllers
 {
     public class ProductsAdminController : Controller
     {
-        private readonly buoi4_SPCartContext _context;
+        private readonly buoi4_SPCartContext _db;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public ProductsAdminController(buoi4_SPCartContext context)
+        public ProductsAdminController(buoi4_SPCartContext db, IWebHostEnvironment webHostEnvironment)
         {
-            _context = context;
+            this._db = db;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         // GET: ProductsAdmin
         public async Task<IActionResult> Index()
         {
-              return _context.Product != null ? 
-                          View(await _context.Product.ToListAsync()) :
-                          Problem("Entity set 'buoi4_SPCartContext.Product'  is null.");
-        }
+            var product = await _db.Product.ToListAsync();
+            return View(product);
+        }   
 
         // GET: ProductsAdmin/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Product == null)
+            if (id == null || _db.Product == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Product
+            var product = await _db.Product
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
@@ -56,31 +57,43 @@ namespace buoi4_SPCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Title,Detail,UrlImage,Price")] Product product)
+        public async Task<IActionResult> Create(Product model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+                string uniqueFileName = UploadedFile(model);
+                Product employee = new Product
+                {
+                    Title = model.Title,
+                    Detail = model.Detail,
+                    Price = model.Price,
+                    Picture = uniqueFileName,
+                };
+                _db.Add(employee);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(product);
+            };
+            return View();
         }
 
         // GET: ProductsAdmin/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null || _context.Product == null)
-            {
-                return NotFound();
-            }
+            var product = _db.Product.Find(id);
 
-            var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            return View(product);
+
+            var productEdit = new Product
+            {
+                Title = product.Title,
+                Detail = product.Detail,
+                Price = product.Price,
+            };
+
+            return View(productEdit);
         }
 
         // POST: ProductsAdmin/Edit/5
@@ -88,46 +101,53 @@ namespace buoi4_SPCart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Title,Detail,UrlImage,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, Product model)
         {
-            if (id != product.ProductID)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.ProductID))
+                    var product = await _db.Product.FindAsync(id);
+
+                    if (product == null)
                     {
                         return NotFound();
                     }
-                    else
+
+                    if (!string.IsNullOrEmpty(product.Picture))
                     {
-                        throw;
+                        var oldImagePath = Path.Combine(webHostEnvironment.WebRootPath, "images", product.Picture);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
                     }
+                    string uniqueFileName = UploadedFile(model);
+
+                    product.Title = model.Title;
+                    product.Detail = model.Detail;
+                    product.Price = model.Price;
+                    product.Picture = uniqueFileName;
+
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in Edit action: {ex.Message}");
+                    return View(model);
+                }
             }
-            return View(product);
+
+            return View(model);
         }
 
         // GET: ProductsAdmin/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Product == null)
-            {
-                return NotFound();
-            }
+            var product = await _db.Product.FindAsync(id);
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
                 return NotFound();
@@ -136,28 +156,55 @@ namespace buoi4_SPCart.Controllers
             return View(product);
         }
 
-        // POST: ProductsAdmin/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Product == null)
+            try
             {
-                return Problem("Entity set 'buoi4_SPCartContext.Product'  is null.");
+                var product = await _db.Product.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                // Delete the profile picture file if it exists
+                if (!string.IsNullOrEmpty(product.Picture))
+                {
+                    var imagePath = Path.Combine(webHostEnvironment.WebRootPath, "images", product.Picture);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+
+                _db.Product.Remove(product);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-            var product = await _context.Product.FindAsync(id);
-            if (product != null)
+            catch (Exception ex)
             {
-                _context.Product.Remove(product);
+                Console.WriteLine($"Error in DeleteConfirmed action: {ex.Message}");
+                TempData["ErrorMessage"] = "Error deleting product.";
+                return RedirectToAction(nameof(Index));
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+
+        private string UploadedFile(Product model)
         {
-          return (_context.Product?.Any(e => e.ProductID == id)).GetValueOrDefault();
+            string uniqueFileName = null;
+            if (model.Image != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Image.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

@@ -43,12 +43,12 @@
 </style>
 
 <div class="List-product">
-    @foreach (var item in ViewBag.products)
+    @foreach (var item in ViewBag.product)
     {
         <div class="product-card">
-            <img src="/images/@item.UrlImage" class="img-responsive" width="200" height="200"/>
+            <img src="/images/@item.Picture" class="img-responsive" width="200" height="200"/>
             <span class="title">@item.Title</span>
-            <a asp-controller="Product" asp-action="addCart" asp-route-id="@item.ProductID" class="addProduct">Add Order</a>
+            <a asp-controller="Products" asp-action="addCart" asp-route-id="@item.ProductID" class="addProduct">Add order</a>
         </div>
     }
 </div>
