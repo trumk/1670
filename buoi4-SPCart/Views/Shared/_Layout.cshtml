@@ -45,6 +45,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a asp-controller="Product" asp-action="ListCart" , style="display:flex">
+                                Cart <img src="~/images/cart.png" width=" 20" height="20" />
+                                @countCart
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,11 +58,6 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <br />
-            <a asp-controller="Product" asp-action="ListCart", style="background-color: red; padding:10px">
-                Cart <img src="~/images/cart.png"/>
-                @countCart
-                </a>
             @RenderBody()
         </main>
     </div>

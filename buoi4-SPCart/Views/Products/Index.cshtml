@@ -2,59 +2,51 @@
 @{
     ViewData["Title"] = "Index";
 }
-
 <style>
-    .list-product {
-        width: 1200px;
-        margin: auto;
+    .List-product {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-    .product {
-        margin-top: 10px;
-        margin-right: 10px;
-        width: 120px;
-        height: 200px;
+    .product-card {
+        flex: 0 0 calc(16.666% - 20px); /* Adjust the percentage as needed */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px;
+        text-align: center;
     }
 
-    img {
-        width: 100px;
-        height: 100px;
+    .product-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    .product-card .title {
         display: block;
-        margin: auto;
-    }
-
-    .title {
-        display: block;
-        font-size: 15px;
+        margin-top: 8px;
         font-weight: bold;
-        text-align: center;
     }
 
-    .viewProduct, .addProduct {
-        width: calc((100% - 2px) / 2);
+    .product-card .addProduct {
         display: inline-block;
-        float: left;
-        padding: 2px;
-        font-size: 12px;
-        box-sizing: border-box;
-        color: #fff;
-        background: #808080;
+        margin-top: 8px;
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
         text-decoration: none;
-        text-align: center;
+        border-radius: 4px;
     }
 
-    .addProduct {
-        margin-left: 2px;
-    }
 </style>
 
 <div class="List-product">
-    @foreach(var item in ViewBag.product)
+    @foreach (var item in ViewBag.products)
     {
-        <div class="product">
-            <img src="/images/@item.UrlImage" class="img-responsive"/>
+        <div class="product-card">
+            <img src="/images/@item.UrlImage" class="img-responsive" width="200" height="200"/>
             <span class="title">@item.Title</span>
             <a asp-controller="Product" asp-action="addCart" asp-route-id="@item.ProductID" class="addProduct">Add Order</a>
         </div>
