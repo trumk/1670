@@ -52,6 +52,11 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <br />
+            <a asp-controller="Product" asp-action="ListCart", style="background-color: red; padding:10px">
+                Cart <img src="~/images/xxxx.png"/>
+                @countCart
+                </a>
             @RenderBody()
         </main>
     </div>
