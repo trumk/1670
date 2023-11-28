@@ -47,6 +47,7 @@ namespace buoi5.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: ProductsAdmin/Create
         public IActionResult Create()
         {
