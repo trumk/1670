@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "buoi4-SPCart", "buoi4-SPCar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buoi4all", "buoi4all\buoi4all.csproj", "{38740385-BB56-43A7-A52A-64850CA764BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buoi5", "buoi5\buoi5.csproj", "{83B59554-3D73-43C0-8255-ACB5C86FE53A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "buoi5", "buoi5\buoi5.csproj", "{83B59554-3D73-43C0-8255-ACB5C86FE53A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{EECD5D1D-662A-4C22-AFFF-2998AC46FE3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{83B59554-3D73-43C0-8255-ACB5C86FE53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83B59554-3D73-43C0-8255-ACB5C86FE53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83B59554-3D73-43C0-8255-ACB5C86FE53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EECD5D1D-662A-4C22-AFFF-2998AC46FE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EECD5D1D-662A-4C22-AFFF-2998AC46FE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EECD5D1D-662A-4C22-AFFF-2998AC46FE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EECD5D1D-662A-4C22-AFFF-2998AC46FE3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
