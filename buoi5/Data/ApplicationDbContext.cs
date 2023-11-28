@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using buoi5.Models;
 
 namespace buoi5.Data
 {
@@ -9,5 +10,6 @@ namespace buoi5.Data
             : base(options)
         {
         }
+        public DbSet<buoi5.Models.Product> Product { get; set; } = default!;
     }
 }
