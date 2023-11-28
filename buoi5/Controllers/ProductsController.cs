@@ -78,6 +78,7 @@ namespace buoi5.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: ProductsAdmin/Edit/5
         public IActionResult Edit(int id)
         {
