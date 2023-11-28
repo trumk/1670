@@ -146,6 +146,7 @@ namespace buoi5.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: ProductsAdmin/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
